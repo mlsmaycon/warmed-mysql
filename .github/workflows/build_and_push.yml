@@ -41,6 +41,9 @@ jobs:
             sleep 1
           done
 
+      - name: logs init container
+        run: docker logs mysql-base
+
       - name: stop init container
         run: docker stop mysql-base
 
