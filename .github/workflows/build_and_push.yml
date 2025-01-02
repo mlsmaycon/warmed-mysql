@@ -36,7 +36,7 @@ jobs:
         shell: bash
         timeout-minutes: 1
         run: |
-          while [ -z "$(docker logs ${{ env.INIT_NAME }} 2>&1 | grep -c 2 '/usr/sbin/mysqld: ready for connections' | grep 2)" ]; do
+          while [ -z "$(docker logs ${{ env.INIT_NAME }} 2>&1 | grep -c '/usr/sbin/mysqld: ready for connections' | grep 2)" ]; do
             echo "Waiting init container..."
             sleep 1
           done
