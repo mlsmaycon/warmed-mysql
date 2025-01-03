@@ -5,8 +5,7 @@ on:
       - main
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME: ${{ github.repository }}
+  IMAGE_NAME: mlsmaycon/warmed-mysql
   IMAGE_TAG: 8
   INIT_NAME: mysql-base
 
@@ -53,16 +52,14 @@ jobs:
         id: meta
         uses: docker/metadata-action@v4
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.IMAGE_NAME }}
 
       -
         name: Login to DockerHub
-        if: github.event_name != 'pull_request'
         uses: docker/login-action@v2
         with:
-          registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
+          username: ${{ secrets.DOCKER_USER }}
+          password: ${{ secrets.DOCKER_TOKEN }}
       -
         name: Docker build and push
         uses: docker/build-push-action@v3
@@ -71,5 +68,5 @@ jobs:
           file: Dockerfile
           push: true
           platforms: ${{ matrix.platform }}
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
+          tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
