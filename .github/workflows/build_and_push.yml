@@ -12,10 +12,6 @@ env:
 jobs:
   build_n_push:
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        platform: [ 'linux/amd64','linux/arm64' ]
     steps:
       - uses: actions/checkout@v4
       -
@@ -27,7 +23,7 @@ jobs:
 
       - name: run container to init
         run: |
-          docker run --platform ${{ matrix.platform }} --rm -d --name ${{ env.INIT_NAME }} -e MYSQL_DATABASE=testing \
+          docker run --platform linux/amd64 --rm -d --name ${{ env.INIT_NAME }} -e MYSQL_DATABASE=testing \
           -e MYSQL_USER=testing -e MYSQL_PASSWORD=testing -e MYSQL_ROOT_PASSWORD=testing  -e MYSQL_ROOT_HOST="%" \
           -v ./mysql:/var/lib/mysql mysql:${{ env.IMAGE_TAG }}
 
@@ -67,6 +63,6 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          platforms: ${{ matrix.platform }}
+          platforms: linux/amd64,linux/arm64
           tags: ${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }}
           labels: ${{ steps.meta.outputs.labels }}
