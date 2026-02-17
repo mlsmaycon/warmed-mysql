@@ -1,3 +1,3 @@
 # Warmed MySQL
 
-Pre-warmed MySQL to speedup tests
+Pre-warmed MySQL to speed up tests
